@@ -260,9 +260,8 @@ html,body{overscroll-behavior:none;-webkit-user-select:none;user-select:none;-we
 <div id="lb" hidden><img></div>
 
 <script>
-/* ===== عدّل هنا براحتك ===== */
 const FONTURL='https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700&family=Zilla+Slab&family=Cherry+Bomb+One&family=Chicle&family=MuseoModerno&family=MedievalSharp&family=Pixelify+Sans&family=Eater&family=Playpen+Sans&family=Orbitron&family=New+Rocker&family=Kalam&display=swap';let _f;const loadFonts=()=>{if(_f)return;_f=1;const l=document.createElement('link');l.rel='stylesheet';l.href=FONTURL;document.head.append(l)};
-const sv=()=>document.documentElement.style.setProperty('--vh',(window.visualViewport?visualViewport.height:innerHeight)+'px');sv();addEventListener('resize',sv);window.visualViewport&&visualViewport.addEventListener('resize',()=>{sv();scrollTo(0,0)});
+const sv=()=>document.documentElement.style.setProperty('--vh',(window.visualViewport?visualViewport.height:innerHeight)+'px');sv();addEventListener('resize',sv);window.visualViewport&&window.visualViewport.addEventListener('resize',()=>{sv();scrollTo(0,0)});
 const BRAND_R='Dev MOHAMMAD - Enzo Cord', BRAND_L='© 2026 جميع الحقوق محفوظة ومحمية برمجياً';
 if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
 var $=s=>document.querySelector(s);
@@ -320,10 +319,8 @@ async function api(path,method='GET',body){
   const j=await r.json().catch(()=>({}));
   if(!r.ok)throw new Error(j.message||'HTTP '+r.status);return j;
 }
-
 const avUrl=(u,s=80)=>u.avatar?`https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.png?size=${s}`:`https://cdn.discordapp.com/embed/avatars/${Number((BigInt(u.id)>>22n)%6n)}.png`;
 
-/* ===== ستايل الاسم ===== */
 const FONTS=[{id:11,n:'gg sans',f:'"Noto Sans Arabic",sans-serif'},{id:12,n:'Tempo',f:"'Zilla Slab',serif"},{id:3,n:'Sakura',f:"'Cherry Bomb One',cursive"},{id:4,n:'Jellybean',f:"'Chicle',cursive"},{id:6,n:'Modern',f:"'MuseoModerno',sans-serif"},{id:7,n:'Medieval',f:"'MedievalSharp',cursive"},{id:8,n:'8Bit',f:"'Pixelify Sans',sans-serif"},{id:10,n:'Vampyre',f:"'Eater',cursive"},{id:13,n:'Monkey Bars',f:"'Playpen Sans',cursive"},{id:14,n:'Mainframe',f:"'Orbitron',sans-serif"},{id:15,n:'Headbang',f:"'New Rocker',cursive"},{id:16,n:'Journal',f:"'Kalam',cursive"}];
 const EFFS=[{id:1,n:'ثابت'},{id:2,n:'تدرج'},{id:3,n:'نيون'},{id:4,n:'كرتون'},{id:5,n:'بوب'},{id:6,n:'توهج'}];
 const PAL=['FFFFFF','99AAB5','000000','ED4245','992D22','E67E22','F1C40F','FEE75C','A8E10C','57F287','1F8B4C','1ABC9C','00D4FF','3498DB','5865F2','1F3A93','9B59B6','71368A','A58BFF','EB459E','FF9ECF','E91E63','8B5A2B','FFB38A','98FFD9'];
@@ -345,7 +342,6 @@ function detectStyle(m){
   return{fontId,effectId,colors:(Array.isArray(raw)&&raw.length?raw:[0xffffff]).map(Number)};
 }
 
-/* ===== دخول ===== */
 async function start(){
   try{
     me=await api('/users/@me');guilds=await api('/users/@me/guilds');
@@ -370,7 +366,6 @@ $('#burger').onclick=()=>nav(true);
 $('#back').onclick=()=>{nav(false);$('#mem').classList.remove('open');$('#back').hidden=true};
 $('#memb').onclick=()=>{if(mobile()){$('#mem').classList.toggle('open');$('#back').hidden=!$('#mem').classList.contains('open')}else $('#app').classList.toggle('nomem'),$('#mem').hidden=$('#app').classList.contains('nomem')};
 
-/* ===== سيرفرات / قنوات / أعضاء ===== */
 async function openGuild(g,el){
   document.querySelectorAll('.gi').forEach(x=>x.classList.remove('on'));el.classList.add('on');cur=g;
   $('#gh').textContent=g.name;curEl=el;tabOn('home');$('#settb').hidden=false;$('#homeb').classList.remove('on');const box=$('#chs');box.innerHTML='';
@@ -412,7 +407,6 @@ async function openChan(c,el){
   timer=setInterval(()=>load(false).catch(()=>{}),3000);
 }
 
-/* ===== عرض الرسائل ===== */
 function md(s,m){
   const codes=[];
   s=String(s).replace(/```(?:\w+\n)?([\s\S]*?)```/g,(_,c)=>{codes.push('<pre>'+esc(c.trim())+'</pre>');return '\u0000'+(codes.length-1)+'\u0000'});
@@ -518,7 +512,6 @@ async function load(first){
 }
 $('#srch').oninput=e=>{const q=e.target.value.trim().toLowerCase();document.querySelectorAll('#msgs .m').forEach(m=>m.style.display=!q||m.textContent.toLowerCase().includes(q)?'':'none')};
 
-/* ===== إرسال ===== */
 async function send(p){try{await api(`/channels/${chan.id}/messages`,'POST',p);await load(false)}catch(e){alert('فشل الإرسال: '+e.message)}}
 async function doSend(){
   const v=$('#in').value.trim();if(!chan||(!v&&!pend.length))return;
@@ -547,8 +540,6 @@ $('#emb').onclick=()=>{if(!$('#emo').children.length)QE.forEach(q=>{const e=E('b
     $('#in').value+=q;$('#in').focus();tog()};$('#emo').append(e)});popTo('#emo')};
 $('#comp').onclick=e=>{const a=e.target.closest('.pop>button')?.dataset.a;if(!a)return;pops.forEach(p=>$(p).hidden=true);a==='photo'||a==='file'?($('#fi').accept=a==='photo'?'image/*,video/*':'',$('#fi').click()):a==='embed'?embedModal():contModal()};
 
-
-/* ===== تسجيل صوتي ===== */
 let mr,rch,rt0,rti,rst;
 $('#mic').onclick=async()=>{
   try{rst=await navigator.mediaDevices.getUserMedia({audio:true})}catch(e){return alert('المايك مقفل: '+e.message)}
@@ -570,7 +561,6 @@ async function wave(blob){
     ac.close();return btoa(String.fromCharCode(...o))}catch(e){return rnd()}
 }
 
-/* webm(opus) -> ogg(opus) بدون إعادة ترميز، عشان ديسكورد يقبله كرسالة صوتية */
 const CRCT=(()=>{const t=new Uint32Array(256);for(let i=0;i<256;i++){let r=i<<24;for(let j=0;j<8;j++)r=r&0x80000000?(r<<1)^0x04c11db7:r<<1;t[i]=r>>>0}return t})();
 const crc32=b=>{let c=0;for(let i=0;i<b.length;i++)c=((c<<8)^CRCT[((c>>>24)^b[i])&255])>>>0;return c};
 function webmToOgg(buf){
@@ -608,7 +598,6 @@ async function sendVoice(blob,dur){
   fd.append('files[0]',out,name);await send(fd);
 }
 
-/* ===== النوافذ ===== */
 function modal(title,body,onOk,okText='إرسال'){
   const md=$('#md');md.onclick=md.oninput=null;
   md.innerHTML=`<header>${title}<button id="mx" data-i="close"></button></header><div class="bd2">${body}</div><footer>${okText?`<button class="btn" id="ms">${okText}</button>`:''}<button class="btn gh" id="mc">إغلاق</button></footer>`;
@@ -670,7 +659,6 @@ function buildCont(){
 }
 $('#lb').onclick=()=>$('#lb').hidden=true;
 
-/* ===== بروفايل البوت + ستايل الاسم ===== */
 let PF;
 async function imgData(f,w,h,type){const bm=await createImageBitmap(f),c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d'),s=Math.max(w/bm.width,h/bm.height),dw=bm.width*s,dh=bm.height*s;x.drawImage(bm,(w-dw)/2,(h-dh)/2,dw,dh);return c.toDataURL(type,.92)}
 async function profileModal(){
@@ -755,7 +743,6 @@ async function pfSave(){
   return false;
 }
 
-/* ===== الخاص ===== */
 const saveDMs=()=>localStorage.setItem('dms',JSON.stringify(dms));
 async function openDM(id,u){
   id=String(id).trim();if(!/^\d{15,22}$/.test(id))return alert('الآيدي غير صحيح');
@@ -798,7 +785,6 @@ function memberSheet(g,x){
   };
 }
 
-/* ===== إعدادات السيرفر ===== */
 function chRows(){
   const box=$('#s_ch');box.innerHTML='';
   Object.values(chMap).sort((a,b)=>a.position-b.position).forEach(c=>{
@@ -865,7 +851,6 @@ async function guildModal(){
   };
 }
 
-/* ===== إيموجي السيرفر المخصص ===== */
 const QE=['👍','❤️','😂','😮','😢','🎉','🔥','👎'];
 async function loadEmojis(g){
   const b=$('#emo');b.innerHTML='';
@@ -880,7 +865,6 @@ async function loadEmojis(g){
         $('#in').value+=`<${x.animated?'a':''}:${x.name}:${x.id}>`;$('#in').focus();tog()};b.append(e)});
   }catch(e){b.append(E('div','mut','تعذر جلب الإيموجي.'))}
 }
-/* ===== منشن + بايو + رياكشن من الرسائل ===== */
 function mentionUser(id){$('#in').value+=`<@${id}> `;tog();$('#in').focus()}
 async function openUserProfile(id){
   if(cur){const x=memCache.find(z=>z.user.id===id);if(x)return memberSheet(cur,x)}
@@ -917,7 +901,6 @@ $('#msgs').addEventListener('click',e=>{
   const mn=e.target.closest('.mn[data-id]');if(mn)return openUserProfile(mn.dataset.id);
   const av=e.target.closest('.av[data-id]');if(av)return openUserProfile(av.dataset.id);
 });
-/* ===== إكمال المنشن التلقائي (@) ===== */
 function macQuery(){
   const v=$('#in').value,p=$('#in').selectionStart||v.length,up=v.slice(0,p),mt=up.match(/(^|\s)@([^\s@]{0,32})$/);
   return mt?mt[2]:null;
@@ -943,7 +926,6 @@ $('#in').addEventListener('input',macShow);
 $('#in').addEventListener('keydown',e=>{if(!$('#mac').hidden&&e.key==='Escape'){macClose();e.stopPropagation()}});
 $('#in').addEventListener('blur',()=>setTimeout(macClose,150));
 $('#cfg').onclick=profileModal;
-/* ===== سلوك التطبيق ===== */
 const tabOn=t=>document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
 $('#tabs').onclick=e=>{const t=e.target.closest('button')?.dataset.t;if(!t)return;
   if(t==='home')nav(true);else if(t==='dm')showDMs();else if(t==='mem')$('#memb').click();else profileModal()};
