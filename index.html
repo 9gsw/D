@@ -314,12 +314,13 @@ hyd();
 let token=localStorage.getItem('bt')||'',me,guilds=[],cur=null,chan,timer,lastId,seen=new Set(),chMap={},pend=[],lastA=null,lastT=0,myStyle={},myNick={},curEl,RM={},dms=(()=>{try{return JSON.parse(localStorage.getItem('dms')||'{}')}catch(e){return{}}})(),memCache=[],msgMap=new Map(),reactMsg=null;
 
 async function api(path,method='GET',body){
-  const h={'x-bot-token':token};let b;
+  const h={'Authorization':`Bot ${token}`};let b;
   if(body instanceof FormData)b=body;else if(body!==undefined){h['Content-Type']='application/json';b=JSON.stringify(body)}
-  const r=await fetch('/api/discord?path='+encodeURIComponent(path),{method,headers:h,body:b});
+  const r=await fetch('https://discord.com/api/v10'+path,{method,headers:h,body:b});
   const j=await r.json().catch(()=>({}));
   if(!r.ok)throw new Error(j.message||'HTTP '+r.status);return j;
 }
+
 const avUrl=(u,s=80)=>u.avatar?`https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.png?size=${s}`:`https://cdn.discordapp.com/embed/avatars/${Number((BigInt(u.id)>>22n)%6n)}.png`;
 
 /* ===== ستايل الاسم ===== */
